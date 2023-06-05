@@ -1,0 +1,130 @@
+%! TeX Program = LuaLaTeX
+
+%% ==> preamble
+\documentclass{article}
+\pagestyle{empty}
+
+\makeatletter
+\def\ltj@stdmcfont{SourceHanSerifSC}
+\def\ltj@stdyokojfm{eva/{nstd,smpl}}
+\makeatother
+
+\usepackage{luatexja}
+
+\usepackage{geometry}
+\geometry{paper=a4paper,
+          includemp,
+          hcentering,
+          hmargin=2.4cm,
+          tmargin=1.8cm,
+          bmargin=1.6cm,
+          marginparsep=0.6cm,
+          marginparwidth=1.4cm,
+          verbose}
+\marginparpush=1mm
+
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math}
+
+\usepackage{fontspec}
+\newfontfeature{microtype}{protrusion=default;expansion=deafult}
+\defaultfontfeatures{microtype}
+\setmainfont{Linux Libertine O}
+\setsansfont{Linux Biolinum O}
+\adjustspacing=2
+\protrudechars=2
+
+\usepackage[normalem]{ulem}
+
+\newcounter{wordexplcnt}
+\newcommand\wordexpl[2]{%
+           \stepcounter{wordexplcnt}%
+           {#1}\nolinebreak[4]\textsuperscript{\tiny\thewordexplcnt}%
+           \marginpar{\hbox to 1.4cm {\llap{\textsuperscript{\tiny\thewordexplcnt}}\nolinebreak[4]\mcfamily\small{#2}\hss}}}
+\newcounter{wordreplcnt}
+\newcommand\wordrepl[2]{%
+           \stepcounter{wordreplcnt}%
+           \uwave{#2}\nolinebreak[4]\textsuperscript{\tiny{}*\thewordreplcnt}%
+           \marginpar{\hbox to 1.4cm {\llap{\textsuperscript{\tiny{}*\thewordreplcnt}}\nolinebreak[4]\ \nolinebreak[4]\mcfamily\small\textit{#1}\hss}}}
+\newif\ifFiNaL \FiNaLtrue %<>Toggle
+\newcommand\maybeblock[2]{%
+           \ifFiNaL{\uline{#1#2}}%
+           \else{\hbox{#1\uline{\phantom{#2#2}}}}\fi}
+\def\；{\hbox to .5\zw{；\hss}}
+\def\［{\hbox to .5\zw{\hss［}}
+\def\］{\hbox to .5\zw{］\hss}}
+\def\CR{\\{}}
+%% preamble <==
+
+\begin{document}
+
+\section*{\sffamily {\TeX} and Her Friend: Hyphenation}
+It's \maybeblock{b}{etter} to break a word with a \wordexpl{hyphen}{断词用连字符} than to stretch \wordexpl{interword}{单词间的{\［}术语{\］}} spaces too much.
+Therefore {\TeX} tries to divide words into \wordexpl{syllables}{音节} when there's no good \wordexpl{alternative}{可供替代的} \maybeblock{a}{vailable}.
+
+But computers are \wordexpl{notoriously}{众所周知的{\；}臭名昭著的} bad at hyphenation. 
+When the \wordexpl{typesetting}{排版{\；}组版} of newspapers began to be \maybeblock{f}{ully} automated, jokes about ``th\hbox{e-r}apists who pr\hbox{e-a}ched on we\hbox{e-k}nights'' soon began to \wordrepl{circulate}{spread}.
+
+It's not hard to understand why machines have behaved poorly at this \maybeblock{t}{ask}, because hyphenation is quite a difficult problem.
+For example, the word `record' is \maybeblock{s}{upposed} to be broken as `rec-ord' when it is a noun, but `re-cord' when it is a verb.
+The word `hyphenation' itself is somewhat \wordrepl{exceptional}{extraordinary};
+if `hy-phen-a-tion' is compared to \maybeblock{s}{imilar} words like `con-cat-e-na-tion', it's not immediately clear why the `n' should be \maybeblock{a}{ttached} to the `e' in one case but not the other.
+Examples like `\hbox{dem-on-stra-tion}' vs\@. `\hbox{de-mon-stra-tive}' show that the \wordrepl{alteration}{change} of two letters can actually affect hyphens that are nine \maybeblock{p}{ositions} away.
+
+A good solution to the problem was discovered by Frank M. Liang during 1980-1982, and {\TeX} \wordrepl{incorporates}{includes} the new method.
+Liang's \wordexpl{algorithm}{算法{\［}计{\］}} works quickly and finds nearly all of the \wordrepl{legitimate}{reasonable} places to insert hyphens;
+yet it makes few if any errors, and it takes up \wordexpl{comparatively}{相对地{\；}相较而言地} little space in the computer.
+Moreover, the method is \maybeblock{f}{lexible} enough to be adapted to any language, and it can also be used to hyphenate words in two languages \wordrepl{simultaneously}{at the same time}.
+Liang's Ph.D. \wordexpl{thesis}{论文}, published by Stanford University's Department of Computer Science in 1983, explains how to take a dictionary of hyphenated words and \maybeblock{t}{each} it to {\TeX};
+i.e., it explains how to compute tables by which {\TeX} will be able to reconstruct most of the hyphens in the given dictionary, without error.
+
+\smallskip
+\begin{flushright}
+      \sffamily\itshape\small\parskip=1mm
+      If all problems of hyphenation have not been solved,\CR
+      at least some progress has been made since that night,\CR
+      when according to legend, an RCA Marketing Manager received\CR
+      a phone call from a disturbed customer. His 301 had just hyphenated ``God''.\par
+      --- \emph{PAUL E. JUSTUS}, There's More to Typesetting Than Setting Type \emph{(1972)}\par
+      \smallskip
+      The committee skeptically re-\CR
+      commended more study for a bill\CR
+      to require warning labels on rec-\CR
+      ords with subliminal messages re-\CR
+      corded backward.\par
+      --- \emph{THE PENINSULA TIMES TRIBUNE} \emph{(April 28, 1982)}
+\end{flushright}
+
+\section*{\sffamily Appendix: The Name of the Game}
+English words like `technology' \wordrepl{stem}{originate} from a Greek root beginning with the letters $τεχ$\ldots;
+and this same Greek word means \textit{art} as well as technology.
+Hence the name {\TeX}, which is an uppercase \maybeblock{f}{orm} of $τεχ$.
+
+\wordexpl{Insiders}{知情之人} pronounce the $χ$\, of {\TeX} as a Greek chi, not as an `x', so that {\TeX} rhymes with the word \textit{blecchhh}.
+It's the `ch' sound in Scottish words like \textit{loch} or German words like \textit{ach};
+it's a Spanish `j' and a Russian `kh'.
+When you say it \maybeblock{c}{orrectly} to your computer, the terminal may become \wordexpl{slightly}{略微{\；}稍微} \wordexpl{moist}{潮湿而微雾}.
+
+The purpose of this pronunciation \maybeblock{e}{xercise} is to remind you that {\TeX} is primarily concerned with high-quality technical \wordexpl{manuscripts}{原稿{\；}手稿}:
+Its emphasis is on art and technology, as in the underlying Greek word.
+If you merely want to produce a \wordrepl{passably}{satisfactorily} good document\,--\,something acceptable and basically readable but not really beautiful\,--\,a simpler system will usually \wordrepl{suffice}{do}.
+With {\TeX} the goal is to produce the finest quality;
+this requires more attention to detail, but you will not find it much harder to go the extra distance, and you'll be able to take special \maybeblock{p}{ride} in the finished product.
+
+\smallskip
+\begin{flushright}
+      \sffamily\itshape\small\parskip=1mm
+      They do certainly give\CR
+      very strange and new-frangled names to diseases.\par
+      --- \emph{PLATO}, The Republic, \emph{Book 3 (c\@. 375 B.C.)}\par
+      \smallskip
+      Technique! The very word is like the shriek\CR
+      Of outraged Art. It is the idiot name\CR
+      Given to effort by those who are too weak,\CR
+      Too weary, or too dull to play the game.\par
+      --- \emph{LEONARD BACON}, Sophia Trenton \emph{(1920)}
+\end{flushright}
+
+\medskip\vtop to 0pt{\hbox{\kern-2.4cm\hbox to \pagewidth{\hss\scriptsize\itshape{Orig text by Donald E. Knuth. Edited (simplified) and typeset by Jing Huang. Created by Lua\kern-.12em{\TeX} with micro typographic techniques. Dated \today. Revision no: 2.\hss}}}}
+
+\end{document}
